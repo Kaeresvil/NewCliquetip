@@ -10,6 +10,10 @@ use App\Models\comments;
 
 class PostController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
 
     public function post(Request $request){
       
@@ -69,7 +73,10 @@ class PostController extends Controller
        }
        ////Post a problem 
        else{
- 
+        // $request->validate([
+        //     'title' => ['required', 'string', 'max:255', ],
+        //     'post' => ['required', 'string'],
+        // ]);
         $post = new PostManagement();
         $post->userId = \Auth::user()->id;
         $post->title = $request->title;
@@ -91,6 +98,20 @@ class PostController extends Controller
 
  
         
+    }
+
+    public function search(Request $request)
+    {
+        // Get the search value from the request
+        $search = $request->input('searchBar');
+
+        // Search in the title and body columns from the posts table
+        $posts = PostManagement::query()
+            ->where('title', 'LIKE', "%{$search}%")
+            ->get();
+
+        // Return the search view with the resluts compacted
+        return view('home', compact('posts'));
     }
 
     

@@ -70,46 +70,36 @@ white-space: pre-wrap;
 
                 <div class="card-body">
                     <!-- post area -->
+                    @if($posts->isNotEmpty())
                     @foreach($posts as $post)
-                     
-         
+                    <div class="d-flex flex-column comment-section">
+                        <div class="bg-white">
+                            <div class="d-flex flex-row user-info">
+                                <img class="rounded-circle" src="{{asset('images/cliquetip-logo.png')}}" width="40">
+                                <div class="d-flex flex-column justify-content-start ml-2"><span class="d-block font-weight-bold name"> {{ $post->name}}
+                                    </span><span class="date text-black-50">Shared publicly - {{ $post->created_at}}</span>
+                                </div>
+                            </div>
 
-                              <div class="d-flex flex-column comment-section">
+                            <div class="mt-2">
+                                <h3>{{ $post->title}}</h3>
+                            </div>
 
-                                  <div  class="bg-white">
-                                          <div class="d-flex flex-row user-info">
-                                            <img class="rounded-circle" src="{{asset('images/cliquetip-logo.png')}}" width="40">
-                                           
-                                              <div class="d-flex flex-column justify-content-start ml-2"><span class="d-block font-weight-bold name"> {{ $post->name}}            
-                                             </span><span class="date text-black-50">Shared publicly - {{ $post->created_at}}</span>
-                                            </div>
-                                        
-                                          </div>
+                            <div class="postDiv">
+                                <p class="post-text">{{ $post->post}}</p>
+                            </div>
+                            <div class="d-flex flex-row fs-12">
 
-                                          <div class="mt-2">
-                                            <h3>{{ $post->title}}</h3>
-
-                                          </div>
-
-                                        <div class="postDiv">
-                                            <p class="post-text">{{ $post->post}}</p>
-                                        </div>
-                                      
-                              
-
-                                      <div class="d-flex flex-row fs-12">
-            
-                                        <button type="submit"  data-url="{{ route('commentshow',$post->id) }}" class="commentbtn like p-2 cursor" value="{{ $post->id}}" ><i class="fa fa-commenting-o">
-                                        </i><span class="ml-1">Comment</span>
-                                        </button>
-                                      </div>
-
-                                  </div><hr>
-                              
-
-
-                             
-                              @endforeach
+                                <button type="submit" data-url="{{ route('commentshow',$post->id) }}" class="commentbtn like p-2 cursor" value="{{ $post->id}}"><i class="fa fa-commenting-o">
+                                    </i><span class="ml-1">Comment</span>
+                                </button>
+                            </div>
+                        </div>
+                        <hr>
+                        @endforeach
+                        @else
+                        <h2>No posts Found</h2>
+                        @endif
                           </div> 
                           
                    
@@ -194,13 +184,13 @@ white-space: pre-wrap;
                                 <div class="modal-body">
                                 <input type="hidden" class="form1" name="form1" value="form1">
                                 <div class="form-group mb-3">
-                                    <input type="text" class="form-control title" name="title" placeholder="TITLE">
+                                    <input type="text" class="form-control title" name="title" placeholder="TITLE" required>
                                     <div class="titleError"></div>
                                   
                                 </div>
 
                                 <div class="form-group ">
-                                <textarea class="form-control descrip" name="post" id="exampleFormControlTextarea1"  rows="10" placeholder="DESCIPTION"></textarea>
+                                <textarea class="form-control descrip" name="post" id="exampleFormControlTextarea1"  rows="10" placeholder="DESCIPTION" required></textarea>
                                   
                                 <div class="descError"></div>
                             
