@@ -21,6 +21,7 @@ class PostController extends Controller
         ->join('users', 'posts.userId', '=', 'users.id')
         // ->join('comments', 'posts.id', '=', 'comments.postId')
         ->select('users.name','posts.*')
+        ->orderBy('id', 'DESC')
         ->get();
         return view('home', compact('posts')); 
        

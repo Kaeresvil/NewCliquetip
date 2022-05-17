@@ -68,40 +68,51 @@ white-space: pre-wrap;
                         
                     </div>
 
-                <div class="card-body">
+                <div class="card-body" style="background-color: #1c435a;">
                     <!-- post area -->
                     @if($posts->isNotEmpty())
                     @foreach($posts as $post)
-                    <div class="d-flex flex-column comment-section">
-                        <div class="bg-white">
-                            <div class="d-flex flex-row user-info">
-                                <img class="rounded-circle" src="{{asset('images/cliquetip-logo.png')}}" width="40">
-                                <div class="d-flex flex-column justify-content-start ml-2"><span class="d-block font-weight-bold name"> {{ $post->name}}
-                                    </span><span class="date text-black-50">Shared publicly - {{ $post->created_at}}</span>
-                                </div>
-                            </div>
+                    
+                    <div class="card card-body mb-3 p-3" style="background-color: #fff;">
+     
 
-                            <div class="mt-2">
-                                <h3>{{ $post->title}}</h3>
-                            </div>
+                  <div>
+                  <img  class="rounded-circle" style="display:inline-block"src="{{asset('images/cliquetip-logo.png')}}" width="40">
+                        <p style="display:inline-block; font-weight: 500;  font-size: 15px" class="sentiment">{{ $post->name}}</p>
+                        
+                      </div>
 
-                            <div class="postDiv">
-                                <p class="post-text">{{ $post->post}}</p>
-                            </div>
-                            <div class="d-flex flex-row fs-12">
+                    <h5 class="ml-5" style="font-size:2vw;">{{$post->title}} </h5>
+                    <span class="date text-black-50 ml-5 mb-2" style="font-size:.8vw;">Shared publicly - {{ $post->created_at}}</span>
+                    <p class="ml-5 mt-1" style="font-size:1.1vw;">{{$post->post}}</p>
+                    <hr class="p-0">
 
-                                <button type="submit" data-url="{{ route('commentshow',$post->id) }}" class="commentbtn like p-2 cursor" value="{{ $post->id}}"><i class="fa fa-commenting-o">
-                                    </i><span class="ml-1">Comment</span>
-                                </button>
-                            </div>
+                    <h6 class="d-flex justify-content-end m-0 p-0" style="font-size:1vw;">
+                       
+                    <a style="font-size:1vw; color: #4081c5;" data-url="{{ route('commentshow',$post->id) }}" class="commentbtn like p-2 cursor" value="{{ $post->id}}">
+                        Comment
+                        </a>
+                    </h6>
+
+                    <!-- Comment Collapse -->
+                    <!-- <div class="d-flex justify-content-center" >
+                        <div class="collapse" id="collapseCommend{{$post->id}}" >
+                            <h4 style="font-size:1vw;">No Comments Available</h4>
                         </div>
-                        <hr>
+                    </div> -->
+                    <!-- //Comment Collapse -->
+
+                </div>
+
                         @endforeach
                         @else
+                        
+                    <div class="card card-body mb-3 p-3" style="background-color: #fff;">
+                 
                         <h2>No posts Found</h2>
+                        </div>
                         @endif
-                          </div> 
-                          
+                      
                    
                   
                 

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use App\Models\User;
+use App\Models\PostManagement;
+use App\Models\comments;
 use Auth;
 
 class HomeController extends Controller
@@ -26,7 +28,10 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('user');
+        $post = PostManagement::where('userId', Auth::user()->id)->orderBy('created_at', 'DESC')->get();
+        return view('user', array(
+            "posts" =>  $post,
+        ));
     }
 
     // Update Profile

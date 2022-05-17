@@ -43,9 +43,6 @@
             <form action="{{ route('updateProfile') }}" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="card card-body mt-3" style="background-color: #1c435a;">
-                    <div class="d-flex justify-content-center">
-                        <h2 class="text-white" style="font-size:2vw;">User Information</h2>
-                    </div>
 
                     <div class="d-flex justify-content-center mb-4">
                         <div class="w-50">
@@ -83,10 +80,30 @@
         <h4 class="fw-bolder" style="font-size:2vw">My Posts</h4>
     </div>
     <div>
-        <div class="card card-body" style="background-color: #1c435a;">
-            <div class="card card-body" style="background-color: #fff;">
+        <div class="card card-body p-4" style="background-color: #1c435a;">
+            @foreach($posts as $key => $post)
+                <div class="card card-body mb-3 p-3" style="background-color: #fff;">
+                    <h5 class="m-0" style="font-size:2vw;">{{$post->title}} </h5>
+                    <span class="date text-black-50" style="font-size:.8vw;">Shared publicly - {{ $post->created_at}}</span>
+                    <p class="m-0 mt-1" style="font-size:1.1vw;">{{$post->post}}</p>
+                    <hr class="p-0">
 
-            </div>
+                    <h6 class="d-flex justify-content-end m-0 p-0" style="font-size:1vw;">
+                        <a style="font-size:1vw; color: #4081c5;" data-bs-toggle="collapse" href="#collapseCommend{{$post->id}}" role="button" aria-expanded="false" aria-controls="collapseCommend{{$post->id}}">
+                        Comment
+                        </a>
+                    </h6>
+
+                    <!-- Comment Collapse -->
+                    <div class="d-flex justify-content-center" >
+                        <div class="collapse" id="collapseCommend{{$post->id}}" >
+                            <h4 style="font-size:1vw;">No Comments Available</h4>
+                        </div>
+                    </div>
+                    <!-- //Comment Collapse -->
+
+                </div>
+            @endforeach
         </div>
     </div>
 </div>
