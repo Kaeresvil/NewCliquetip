@@ -19,9 +19,6 @@ body{
   margin-bottom: -35px;
 white-space: pre-wrap;
 }
-.comment-text{
-  font-size: 18px
-}
 .commentbtn{
   border: none;
   background: transparent;
@@ -112,17 +109,7 @@ white-space: pre-wrap;
                         <h2>No posts Found</h2>
                         </div>
                         @endif
-                      
-                   
-                  
-                
-          
-    
-                            
-                  
-                   
                 </div><!-- End of card body -->
-
             </div>
         </div>
     </div>
@@ -143,41 +130,32 @@ white-space: pre-wrap;
       </div>
 
                        
-                                <div class="modal-body">
-                              
-                                <div class="d-flex flex-row align-items-start mt-1 ">
+          <div class="modal-body">
+        
+          <div class="d-flex flex-row align-items-start mt-1 ">
 
-                                    <div class=" mt-2 comcontain">
-                                    <!-- //// fetch comments -->
-                                   </div>
+              <div class=" mt-2 comcontain">
+              <!-- //// fetch comments -->
+              </div>
 
-                                </div>
-                                
-                            
-                           
-                                  <div class="d-flex align-items-start mt-2">
-                                <input type="hidden" class="form" name="form2" value="form2">
-                                <input  class="postid" name="postid" id="postid" type="hidden"  >
-                                    <textarea id="commentArea" class="comment form-control shadow-none textarea" placeholder="Write comment..." name="comment"></textarea>
-                                  
-                                  </div>
-                                  <div class="commentSec">
-                                  
-                                  </div>
+          </div>
+            <div class="d-flex align-items-start mt-2">
+          <input type="hidden" class="form" name="form2" value="form2">
+          <input  class="postid" name="postid" id="postid" type="hidden"  >
+              <textarea id="commentArea" class="comment form-control shadow-none textarea" placeholder="Write comment..." name="comment"></textarea>
+            
+            </div>
+            <div class="commentSec">
+            
+            </div>
 
-                                  <div class="mt-2 text-right">
-                                    <button class="btn btn-primary btn-sm shadow-none postcombtn" type="button" data-url="{{ route('addpost')}}" >Post comment</button>
+            <div class="mt-2 text-right">
+              <button class="btn btn-primary btn-sm shadow-none postcombtn" type="button" data-url="{{ route('addpost')}}" >Post comment</button>
 
-                                    <button class="btn btn-outline-primary btn-sm ml-1 shadow-none closeCom" data-bs-dismiss="modal" type="button">Cancel</button>
-                                </div>
-
-                       
-                              
-
-                               
-                                </div>
-                            
-                            </form>
+              <button class="btn btn-outline-primary btn-sm ml-1 shadow-none closeCom" data-bs-dismiss="modal" type="button">Cancel</button>
+          </div>
+          </div>
+      </form>
     </div>
   </div>
 </div>
@@ -269,9 +247,11 @@ $(document).ready(function(){
         $('.comcontain').append('<h3 class="noavail">No Comments Available!</h3>')
       }else{
         $('.comcontain').empty()
+        console.log(response)
         $.each(response, function(key, item) 
         {
-              $('.comcontain').append(' <img class="rounded-circle" src="{{asset('images/cliquetip-logo.png')}}" width="40"><p  class="d-inline comment-text">'+item.comment+'</p><hr>')
+
+              $('.comcontain').append(' <img class="rounded-circle" src="{{asset('images/cliquetip-logo.png')}}" width="30"><p  class="d-inline comment-text" style="font-size: 18px; font-weight: 500">'+item.name+'</p><br/><p  class="d-inline comment-text ml-4" style="font-size: 15px">'+item.comment+'</p><hr>')
         });
       }
     
@@ -321,7 +301,7 @@ $(document).ready(function(){
                   $('.commentSec').append(' <span class="text-danger fade show">'+error_val+'</span>')
             });
             }else{
-
+console.log(response)
                       $('.comcontain').append(' <img class="rounded-circle" src="{{asset('images/cliquetip-logo.png')}}" width="40"><p  class="d-inline comment-text">'+response.comment+'</p><hr>')
                       $('.noavail').hide()
                       $('.commentSec').empty()

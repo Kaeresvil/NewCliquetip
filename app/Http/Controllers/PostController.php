@@ -30,7 +30,8 @@ class PostController extends Controller
     public function comment($id){
     
         $comments = DB::table('comments')
-        ->select('comments.comment')
+        ->leftjoin('users', 'comments.userId', '=', 'users.id')
+        ->select('comments.comment', 'users.name')
         ->where('comments.postId', '=', $id)
         ->get();
         return response()->json($comments);
@@ -63,11 +64,14 @@ class PostController extends Controller
             $comment->postId = $request->input('postid');
             $comment->comment = $request->input('comment');
             $comment->save();
+
+
+     
             return response()->json([
                     'status'=>200,
-                    'comment'=>$comment->comment
+                    'comment'=>$comment->comment,
             ]);
-    
+     
         }  
 
 
@@ -109,6 +113,7 @@ class PostController extends Controller
         // Search in the title and body columns from the posts table
         $posts = PostManagement::query()
             ->where('title', 'LIKE', "%{$search}%")
+            ->orwhere('post', 'LIKE', "%{$search}%")
             ->get();
 
         // Return the search view with the resluts compacted

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\DB;
 use App\Models\User;
 use App\Models\PostManagement;
 use App\Models\comments;
@@ -29,8 +30,29 @@ class HomeController extends Controller
     public function index()
     {
         $post = PostManagement::where('userId', Auth::user()->id)->orderBy('created_at', 'DESC')->get();
+        foreach($post as $key => $p)
+        {
+            $comment[$key] = comments::where('postId', $p->id)->get();
+        }
+
+        foreach($post as $key => $p)
+        {
+            foreach($comment[$key] as $key1 => $c)
+            {
+                $commentName[$key][$key1] = User::where('id', $c->userId)->value('name'); 
+            }
+        }
+
+        if($post->isEmpty())
+        {
+            $comment = NULL;
+            $commentName = NULL;
+        }
+
         return view('user', array(
             "posts" =>  $post,
+            "comments" =>  $comment,
+            "commentNames" =>  $commentName,
         ));
     }
 

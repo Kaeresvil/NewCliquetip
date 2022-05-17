@@ -43,6 +43,9 @@
             <form action="{{ route('updateProfile') }}" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="card card-body mt-3" style="background-color: #1c435a;">
+                    <div class="d-flex justify-content-center">
+                        <h2 class="text-white" style="font-size:2vw;">User Information</h2>
+                    </div>
 
                     <div class="d-flex justify-content-center mb-4">
                         <div class="w-50">
@@ -80,7 +83,7 @@
         <h4 class="fw-bolder" style="font-size:2vw">My Posts</h4>
     </div>
     <div>
-        <div class="card card-body p-4" style="background-color: #1c435a;">
+        <div class="card card-body" style="background-color: #1c435a;">
             @foreach($posts as $key => $post)
                 <div class="card card-body mb-3 p-3" style="background-color: #fff;">
                     <h5 class="m-0" style="font-size:2vw;">{{$post->title}} </h5>
@@ -96,8 +99,14 @@
 
                     <!-- Comment Collapse -->
                     <div class="d-flex justify-content-center" >
-                        <div class="collapse" id="collapseCommend{{$post->id}}" >
-                            <h4 style="font-size:1vw;">No Comments Available</h4>
+                        <div class="collapse w-100" id="collapseCommend{{$post->id}}" >
+                            @foreach($comments[$key] as $key1 => $comment)
+                                <div class="p-0 w-100">
+                                    <h5 style="font-size:1vw">{{$commentNames[$key][$key1]}}: {{$comment->comment}}
+                                    <hr>
+                                    </h5>
+                                </div>
+                            @endforeach
                         </div>
                     </div>
                     <!-- //Comment Collapse -->
