@@ -250,9 +250,32 @@ $(document).ready(function(){
         console.log(response)
         $.each(response, function(key, item) 
         {
-
-              $('.comcontain').append(' <img class="rounded-circle" src="{{asset('images/cliquetip-logo.png')}}" width="30"><p  class="d-inline comment-text" style="font-size: 18px; font-weight: 500">'+item.name+'</p><br/><p  class="d-inline comment-text ml-4" style="font-size: 15px">'+item.comment+'</p><hr>')
+              $('.comcontain').append('<img class="rounded-circle" src="{{asset('images/cliquetip-logo.png')}}" width="30"><p  class="d-inline comment-text" style="font-size: 18px; font-weight: 500">'+item.name+'</p><br/><p  class="d-inline comment-text ml-4" style="font-size: 15px">'+item.comment+'</p><button style="color: red; float: right; border: none; background: transparent" class="deleteRecord" data-id='+item.id+' data-url="{{ route('commentBTN')}}" >Delete</button> <hr>')
         });
+
+        $(".deleteRecord").click(function(){
+          var id = $(this).data("id");
+          var comURL = $(this).data('url');
+          var token = $("meta[name='csrf-token']").attr("content");
+          var commentID = {
+            "id": id,
+            "_token": token,
+        }
+        
+          $.ajax(
+          {
+              url: comURL,
+              type: 'POST',
+              data: commentID,
+              success: function (){
+                  console.log("it Works");
+                
+              
+              }
+          });
+          console.log(id)
+        
+          });
       }
     
             
@@ -260,7 +283,13 @@ $(document).ready(function(){
     error: function(res){
      console.log(res)
     },
+
+
+    
   });
+
+ 
+  
 
   });
 
@@ -302,9 +331,32 @@ $(document).ready(function(){
             });
             }else{
 console.log(response)
-                      $('.comcontain').append(' <img class="rounded-circle" src="{{asset('images/cliquetip-logo.png')}}" width="40"><p  class="d-inline comment-text">'+response.comment+'</p><hr>')
+                      $('.comcontain').append('<img class="rounded-circle" src="{{asset('images/cliquetip-logo.png')}}" width="30"><p  class="d-inline comment-text" style="font-size: 18px; font-weight: 500">'+response.name+'</p><br/><p  class="d-inline comment-text ml-4" style="font-size: 15px">'+response.comment+'</p><button style="color: red; float: right; border: none; background: transparent" class="deleteRecord" data-id='+response.id+' data-url="{{ route('commentBTN')}}" >Delete</button> <hr>')
                       $('.noavail').hide()
                       $('.commentSec').empty()
+
+                      $(".deleteRecord").click(function(){
+                      var id = $(this).data("id");
+                      var comURL = $(this).data('url');
+                      var token = $("meta[name='csrf-token']").attr("content");
+                      var commentID = {
+                        "id": id,
+                        "_token": token,
+                    }
+                    
+                      $.ajax(
+                      {
+                          url: comURL,
+                          type: 'POST',
+                          data: commentID,
+                          success: function (){
+                              console.log("it Works");
+                              
+                          }
+                      });
+                      console.log(id)
+                    
+                      });
                      
             }
                   
@@ -316,8 +368,7 @@ console.log(response)
       });
 
  
-
-  
+      
 
 
 

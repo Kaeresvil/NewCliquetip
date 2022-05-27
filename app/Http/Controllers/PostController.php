@@ -31,10 +31,22 @@ class PostController extends Controller
     
         $comments = DB::table('comments')
         ->leftjoin('users', 'comments.userId', '=', 'users.id')
-        ->select('comments.comment', 'users.name')
+        ->select('comments.id','comments.comment', 'users.name')
         ->where('comments.postId', '=', $id)
         ->get();
         return response()->json($comments);
+
+    }
+
+    public function delete(Request $request){
+       
+        $commentID = $request->input('id');
+        comments::find($commentID)->delete($commentID);
+  
+        return response()->json([
+            'success' => 'Record deleted successfully!'
+        ]);
+
 
     }
 
@@ -70,6 +82,7 @@ class PostController extends Controller
             return response()->json([
                     'status'=>200,
                     'comment'=>$comment->comment,
+                    'id'=>$comment->id,
             ]);
      
         }  
