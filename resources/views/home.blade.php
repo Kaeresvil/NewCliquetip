@@ -74,7 +74,12 @@ white-space: pre-wrap;
      
 
                   <div>
-                  <img  class="rounded-circle" style="display:inline-block"src="{{asset('images/cliquetip-logo.png')}}" width="40">
+
+
+                <img src="{{ asset('uploads/user/'.($post->prof_image))}}" class="rounded-circle" style="display:inline-block"  width="40">
+
+                    
+                
                         <p style="display:inline-block; font-weight: 500;  font-size: 15px" class="sentiment">{{ $post->name}}</p>
                         
                       </div>
@@ -134,13 +139,18 @@ white-space: pre-wrap;
         
           <div class="d-flex flex-row align-items-start mt-1 ">
 
-              <div class=" mt-2 comcontain">
+              <div class=" mt-2 commmmcontain" style="width: 100vw">
+
+   
+                <li class="mt-2 comcontain" style="width: 100%;  list-style-type: none; "></li>
+
               <!-- //// fetch comments -->
               </div>
 
           </div>
             <div class="d-flex align-items-start mt-2">
           <input type="hidden" class="form" name="form2" value="form2">
+          <input type="hidden" class="username" name="username" value=" {{ Auth::user()->name }}">
           <input  class="postid" name="postid" id="postid" type="hidden"  >
               <textarea id="commentArea" class="comment form-control shadow-none textarea" placeholder="Write comment..." name="comment"></textarea>
             
@@ -156,6 +166,52 @@ white-space: pre-wrap;
           </div>
           </div>
       </form>
+    </div>
+  </div>
+</div>
+
+<!-- delte Modal -->
+<div class="modal fade" id="delete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header" style="background: grey">
+       
+      
+        <button type="button" class="btn-close closeCom" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+                       
+          <div class="modal-body" style="background: grey; color: white">
+          <h3>Are you sure you want to delete your comment? </h3>
+         
+          </div>
+          <div class="modal-footer" style="background: grey">
+                               
+                               <button type="submit" id="delete-me" class="btn btn-success btn deletebtn" >YES</button>
+                               <button type="button" class="postClose btn btn-danger btn" data-bs-dismiss="modal">NO</button>
+                               </div>
+    </div>
+  </div>
+</div>
+<!-- ifusers Modal -->
+<div class="modal fade" id="ifUsers" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header" style="background: grey">
+       
+      
+        <button type="button" class="btn-close closeCom" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+                       
+          <div class="modal-body" style="background: grey; color: white">
+          <h3>Its Not Yours!! </h3>
+         
+          </div>
+          <div class="modal-footer" style="background: grey">
+                               
+                               <button type="button" class="postClose btn btn-success btn" data-bs-dismiss="modal">OK</button>
+                               </div>
     </div>
   </div>
 </div>
@@ -232,9 +288,13 @@ $(document).ready(function(){
     var userURL = $(this).data('url');
  
   var commentID = $(this).attr("value");
+  var USersID = 3;
   $('#postid').val(commentID);
 
-
+  $('#comment').modal({
+                                backdrop: 'static',
+                                keyboard: false
+                            })
   $.ajax({
     type: "GET",
     url: userURL,
@@ -247,35 +307,54 @@ $(document).ready(function(){
         $('.comcontain').append('<h3 class="noavail">No Comments Available!</h3>')
       }else{
         $('.comcontain').empty()
-        console.log(response)
+        console.log(USersID)
         $.each(response, function(key, item) 
         {
-              $('.comcontain').append('<img class="rounded-circle" src="{{asset('images/cliquetip-logo.png')}}" width="30"><p  class="d-inline comment-text" style="font-size: 18px; font-weight: 500">'+item.name+'</p><br/><p  class="d-inline comment-text ml-4" style="font-size: 15px">'+item.comment+'</p><button style="color: red; float: right; border: none; background: transparent" class="deleteRecord" data-id='+item.id+' data-url="{{ route('commentBTN')}}" >Delete</button> <hr>')
+              $('.comcontain').append('<img class="rounded-circle" src="../uploads/user/'+item.prof_image+'" width="30"><p  class="d-inline comment-text ml-1" style="font-size: 18px; font-weight: 500">'+item.name+'</p><br/><p  class="d-inline comment-text " style="font-size: 15px; margin-left: 8%">'+item.comment+'</p><button style="color: red; float: right; border: none; background: transparent" class="deleteRecord" data-id='+item.id+'  data-name='+item.userId+' data-url="{{ route('commentBTN')}}" >Delete</button> <hr> ')
+  
         });
 
         $(".deleteRecord").click(function(){
-          var id = $(this).data("id");
-          var comURL = $(this).data('url');
-          var token = $("meta[name='csrf-token']").attr("content");
-          var commentID = {
-            "id": id,
-            "_token": token,
-        }
         
-          $.ajax(
-          {
-              url: comURL,
-              type: 'POST',
-              data: commentID,
-              success: function (){
-                  console.log("it Works");
-                
+          var id =  $(this).data("id");
+          var name =  $(this).data("name");
+          var comURL =  $(".deleteRecord").data('url');
+          var userid = {!! auth()->user()->toJson() !!};
+          console.log(name)
+          console.log(userid.id)
+          if(name == userid.id ){
+            $('#delete').modal('show');
+          }else{
+                  $('#ifUsers').modal('show');
+                }
+
+          $(".deletebtn").click(function(){
+            console.log(id)
+                  var token = $("meta[name='csrf-token']").attr("content");
+                  var commentID = {
+                    "id": id,
+                    "_token": token,
+                }
+        
+
+        
+                  $.ajax(
+                  {
+                      url: comURL,
+                      type: 'POST',
+                      data: commentID,
+                      success: function (){
+                          console.log("it Works");
+                          window.location.reload();
+
+                      
+                      }
+                  });
               
-              }
-          });
-          console.log(id)
-        
-          });
+                 
+                
+                  });
+                  });
       }
     
             
@@ -305,6 +384,7 @@ $(document).ready(function(){
           'postid': $('.postid').val(),
           'comment': $('.comment').val(),
         }
+        var name =  $('.username').val()
         console.log(datas)
       
 
@@ -331,32 +411,48 @@ $(document).ready(function(){
             });
             }else{
 console.log(response)
-                      $('.comcontain').append('<img class="rounded-circle" src="{{asset('images/cliquetip-logo.png')}}" width="30"><p  class="d-inline comment-text" style="font-size: 18px; font-weight: 500">'+response.name+'</p><br/><p  class="d-inline comment-text ml-4" style="font-size: 15px">'+response.comment+'</p><button style="color: red; float: right; border: none; background: transparent" class="deleteRecord" data-id='+response.id+' data-url="{{ route('commentBTN')}}" >Delete</button> <hr>')
+                      $('.comcontain').append('@if(Auth::user()->prof_image == null)<img class="rounded-circle" src="{{ asset('uploads/user/profile.png')}}" width="30"> @elseif(Auth::user()->prof_image != null)<img class="rounded-circle" src="{{ asset('uploads/user/'.(Auth::user()->prof_image))}}" width="30">@endif<p  class="d-inline comment-text" style="font-size: 18px; font-weight: 500">'+name+'</p><br/><p  class="d-inline comment-text " style="font-size: 15px; margin-left: 8%">'+response.comment+'</p><button style="color: red; float: right; border: none; background: transparent" class="deleteRecord" data-id='+response.id+'  data-name='+response.userId+' data-url="{{ route('commentBTN')}}" >Delete</button> <hr>')
                       $('.noavail').hide()
                       $('.commentSec').empty()
 
                       $(".deleteRecord").click(function(){
-                      var id = $(this).data("id");
-                      var comURL = $(this).data('url');
-                      var token = $("meta[name='csrf-token']").attr("content");
-                      var commentID = {
-                        "id": id,
-                        "_token": token,
-                    }
-                    
-                      $.ajax(
-                      {
-                          url: comURL,
-                          type: 'POST',
-                          data: commentID,
-                          success: function (){
-                              console.log("it Works");
-                              
-                          }
-                      });
-                      console.log(id)
-                    
-                      });
+                        var id =  $(this).data("id");
+                          var name =  $(this).data("name");
+                          var comURL =  $(".deleteRecord").data('url');
+                          var userid = {!! auth()->user()->toJson() !!};
+                          console.log(name)
+                          console.log(userid.id)
+                          if(name == userid.id ){
+                            $('#delete').modal('show');
+                          }else{
+                                  $('#ifUsers').modal('show');
+                                }
+
+                          $(".deletebtn").click(function(){
+                            console.log(id)
+                                  var token = $("meta[name='csrf-token']").attr("content");
+                                  var commentID = {
+                                    "id": id,
+                                    "_token": token,
+                                }
+                        
+
+                        
+                                  $.ajax(
+                                  {
+                                      url: comURL,
+                                      type: 'POST',
+                                      data: commentID,
+                                      success: function (){
+                                          console.log("it Works");
+                                          window.location.reload();
+
+                                      
+                                      }
+                                  });
+
+                                  });
+                                      });
                      
             }
                   

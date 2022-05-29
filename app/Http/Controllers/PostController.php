@@ -20,7 +20,7 @@ class PostController extends Controller
         $posts = DB::table('posts')
         ->join('users', 'posts.userId', '=', 'users.id')
         // ->join('comments', 'posts.id', '=', 'comments.postId')
-        ->select('users.name','posts.*')
+        ->select('users.name','users.prof_image','posts.*')
         ->orderBy('id', 'DESC')
         ->get();
         return view('home', compact('posts')); 
@@ -31,7 +31,7 @@ class PostController extends Controller
     
         $comments = DB::table('comments')
         ->leftjoin('users', 'comments.userId', '=', 'users.id')
-        ->select('comments.id','comments.comment', 'users.name')
+        ->select('comments.id','comments.comment', 'users.name','comments.userId','users.prof_image')
         ->where('comments.postId', '=', $id)
         ->get();
         return response()->json($comments);
@@ -42,6 +42,19 @@ class PostController extends Controller
        
         $commentID = $request->input('id');
         comments::find($commentID)->delete($commentID);
+  
+        return response()->json([
+            'success' => 'Record deleted successfully!'
+        ]);
+
+
+    }
+
+    public function deleteall( $id){
+       
+        $postid = $id;
+        dd($postid);
+        comments::where('postid',$postId)->delete();
   
         return response()->json([
             'success' => 'Record deleted successfully!'
@@ -83,6 +96,7 @@ class PostController extends Controller
                     'status'=>200,
                     'comment'=>$comment->comment,
                     'id'=>$comment->id,
+                    'userId'=>$comment->userId,
             ]);
      
         }  

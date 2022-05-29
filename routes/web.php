@@ -23,6 +23,8 @@ Auth::routes();
 
 Route::get('home',[PostController::class,'post'])->name('home');
 Route::post('home/deletecomment',[PostController::class,'delete'])->name('commentBTN');
+Route::post('user/deletecomment',[PostController::class,'delete'])->name('commentprofBTN');
+Route::delete('comment/{id}',[PostController::class,'deleteall'])->name('allcommentprofBTN');
 Route::get('post/{id}', [PostController::class, 'comment'])->name('commentshow');
 Route::post('post',[PostController::class,'addPost'])->name('addpost');
 

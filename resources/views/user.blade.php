@@ -79,6 +79,56 @@
 
     <hr style="height: 2px;">
 
+<!-- delte Modal -->
+<div class="modal fade" id="delete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header" >
+       
+      
+        <button type="button" class="btn-close closeCom" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+                       
+          <div class="modal-body" >
+          <h3>Are you sure you want to delete the comment? </h3>
+         
+          </div>
+          <div class="modal-footer" >
+                               
+                               <button type="submit" id="delete-me" class="btn btn-success btn deletebtn" >YES</button>
+                               <button type="button" class="postClose btn btn-danger btn" data-bs-dismiss="modal">NO</button>
+                               </div>
+    </div>
+  </div>
+</div>
+
+<!-- delte Modal -->
+<!-- delte Modal -->
+<div class="modal fade" id="deleteall" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header" >
+       
+      
+        <button type="button" class="btn-close closeCom" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+                       
+          <div class="modal-body" >
+          <h3>Are you sure you want to delete all comments? </h3>
+         
+          </div>
+          <div class="modal-footer" >
+                               
+                               <button type="submit" id="delete-me" class="btn btn-success btn deleteallbtn" >YES</button>
+                               <button type="button" class="postClose btn btn-danger btn" data-bs-dismiss="modal">NO</button>
+                               </div>
+    </div>
+  </div>
+</div>
+
+<!-- delte Modal -->
     <div>
         <h4 class="fw-bolder" style="font-size:2vw">My Posts</h4>
     </div>
@@ -97,14 +147,19 @@
                         </a>
                     </h6>
 
+                   
+
                     <!-- Comment Collapse -->
                     <div class="d-flex justify-content-center" >
                         <div class="collapse w-100" id="collapseCommend{{$post->id}}" >
+                        <button style="color: red; font-size: 20px;float: left; border: none; background: transparent" class="deleteallRecord " data-id="{{$post->id}}"  data-url="{{ route('allcommentprofBTN',[$post->id])}}" >Delete all</button><br>
                             @foreach($comments[$key] as $key1 => $comment)
-                                <div class="p-0 w-100">
-                                    <h5 style="font-size:1vw">{{$commentNames[$key][$key1]}}: {{$comment->comment}}
+                                <div class="p-0 w-100 mt-2">
+                                    <h5 style="font-size:1vw">{{$commentNames[$key][$key1]}}: <span>{{$comment->comment}}</span>
+                                    <button style="color: red; float: right; border: none; background: transparent" class="deleteRecord mr-2" data-id='{{$comment->id}}' data-url="{{ route('commentprofBTN')}}" >Delete</button>
                                     <hr>
                                     </h5>
+                                   
                                 </div>
                             @endforeach
                         </div>
@@ -117,7 +172,74 @@
     </div>
 </div>
 <!-- //User Information -->
+<script>
+$(document).ready(function(){
+    
+    $(".deleteRecord").click(function(){
+        $('#delete').modal('show');
+        var id =  $(this).data("id");
+        var comURL =  $(".deleteRecord").data('url');
+        console.log(comURL);
+    
+        $(".deletebtn").click(function(){
+          console.log(id)
+                var token = $("meta[name='csrf-token']").attr("content");
+                var commentID = {
+                  "id": id,
+                  "_token": token,
+              }
+      
+                $.ajax(
+                {
+                    url: comURL,
+                    type: 'POST',
+                    data: commentID,
+                    success: function (){
+                        console.log("it Works");
+                        window.location.reload();
 
+                    
+                    }
+                });
+            
+               
+              
+                });
+                });
+
+
+    $(".deleteallRecord").click(function(){
+        $('#deleteall').modal('show');
+        var id =  $(this).data("id");
+        var comURL =  $(this).data('url');
+        console.log(id);
+    
+        $(".deleteallbtn").click(function(){
+          console.log(id)
+                var token = $("meta[name='csrf-token']").attr("content");
+  
+      
+                $.ajax(
+                {
+                    url: comURL,
+                    type: 'DELETE',
+           
+                    success: function (){
+                        console.log("it Works");
+                        window.location.reload();
+
+                    
+                    }
+                });
+            
+               
+              
+                });
+                });
+
+})
+
+</script>
 @endsection
 
 @section('js')

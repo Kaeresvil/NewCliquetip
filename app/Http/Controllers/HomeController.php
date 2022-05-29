@@ -35,25 +35,33 @@ class HomeController extends Controller
             $comment[$key] = comments::where('postId', $p->id)->get();
         }
 
-        foreach($post as $key => $p)
-        {
-            foreach($comment[$key] as $key1 => $c)
+
+            foreach($post as $key => $p)
             {
-                $commentName[$key][$key1] = User::where('id', $c->userId)->value('name'); 
+                    foreach($comment[$key] as $key1 => $c)
+                
+                    {
+                        $commentName[$key][$key1] = User::where('id', $c->userId)->value('name'); 
+                    }
+                    // $commentName = NULL;
             }
-        }
 
-        if($post->isEmpty())
-        {
-            $comment = NULL;
-            $commentName = NULL;
-        }
 
-        return view('user', array(
-            "posts" =>  $post,
-            "comments" =>  $comment,
-            "commentNames" =>  $commentName,
-        ));
+            if($post->isEmpty()){
+                $comment = NULL;
+                $commentName = NULL;
+            }
+              
+
+            return view('user', array(
+                "posts" =>  $post,
+                "comments" =>  $comment,
+                "commentNames" =>  $commentName,
+            ));
+
+       
+
+      
     }
 
     // Update Profile
