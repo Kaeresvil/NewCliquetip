@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 use App\Models\PostManagement;
+use App\Models\User;
 use App\Models\comments;
 
 class PostController extends Controller
@@ -50,11 +51,10 @@ class PostController extends Controller
 
     }
 
-    public function deleteall( $id){
+    public function deleteall( Request $request){
        
-        $postid = $id;
-        dd($postid);
-        comments::where('postid',$postId)->delete();
+        $postid = $request->input('id');
+        comments::where('postId',$postid)->delete();
   
         return response()->json([
             'success' => 'Record deleted successfully!'
@@ -138,10 +138,20 @@ class PostController extends Controller
         $search = $request->input('searchBar');
 
         // Search in the title and body columns from the posts table
-        $posts = PostManagement::query()
-            ->where('title', 'LIKE', "%{$search}%")
-            ->orwhere('post', 'LIKE', "%{$search}%")
-            ->get();
+      
+        $posts = DB::table('posts')
+        ->join('users', 'posts.userId', '=', 'users.id')
+              ->where('posts.title', 'LIKE', "%{$search}%")
+            ->orwhere('posts.post', 'LIKE', "%{$search}%")
+            ->orwhere('users.name', 'LIKE', "%{$search}%")
+        ->get();
+
+        // $posts = PostManagement::query()
+        //     ->where('title', 'LIKE', "%{$search}%")
+        //     ->orwhere('post', 'LIKE', "%{$search}%")
+        //     ->get();
+
+
 
         // Return the search view with the resluts compacted
         return view('home', compact('posts'));

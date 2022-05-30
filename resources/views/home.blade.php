@@ -91,7 +91,7 @@ white-space: pre-wrap;
 
                     <h6 class="d-flex justify-content-end m-0 p-0" style="font-size:1vw;">
                        
-                    <a style="font-size:1vw; color: #4081c5;" data-url="{{ route('commentshow',$post->id) }}" class="commentbtn like p-2 cursor" value="{{ $post->id}}">
+                    <a style="font-size: 16px; color: #4081c5;" data-url="{{ route('commentshow',$post->id) }}" class="commentbtn like p-2 cursor" value="{{ $post->id}}">
                         Comment
                         </a>
                     </h6>
@@ -109,9 +109,9 @@ white-space: pre-wrap;
                         @endforeach
                         @else
                         
-                    <div class="card card-body mb-3 p-3" style="background-color: #fff;">
+                    <div class="card card-body mb-3 p-3" style="background-color: #fff; text-align: center">
                  
-                        <h2>No posts Found</h2>
+                        <h2>No data found</h2>
                         </div>
                         @endif
                 </div><!-- End of card body -->
@@ -310,7 +310,7 @@ $(document).ready(function(){
         console.log(USersID)
         $.each(response, function(key, item) 
         {
-              $('.comcontain').append('<img class="rounded-circle" src="../uploads/user/'+item.prof_image+'" width="30"><p  class="d-inline comment-text ml-1" style="font-size: 18px; font-weight: 500">'+item.name+'</p><br/><p  class="d-inline comment-text " style="font-size: 15px; margin-left: 8%">'+item.comment+'</p><button style="color: red; float: right; border: none; background: transparent" class="deleteRecord" data-id='+item.id+'  data-name='+item.userId+' data-url="{{ route('commentBTN')}}" >Delete</button> <hr> ')
+              $('.comcontain').append('<img class="rounded-circle" src="../uploads/user/'+item.prof_image+'" width="30"><p  class="d-inline comment-text ml-1" style="font-size: 18px; font-weight: 500">'+item.name+'</p><br/><p  class="d-inline comment-text " style="font-size: 15px; margin-left: 8%">'+item.comment+'</p><button style="float: right; margin-top: -20px" class="btn btn-danger deleteRecord " data-id='+item.id+'  data-name='+item.userId+' data-url="{{ route('commentBTN')}}" >Delete</button> <hr> ')
   
         });
 
@@ -411,7 +411,7 @@ $(document).ready(function(){
             });
             }else{
 console.log(response)
-                      $('.comcontain').append('@if(Auth::user()->prof_image == null)<img class="rounded-circle" src="{{ asset('uploads/user/profile.png')}}" width="30"> @elseif(Auth::user()->prof_image != null)<img class="rounded-circle" src="{{ asset('uploads/user/'.(Auth::user()->prof_image))}}" width="30">@endif<p  class="d-inline comment-text" style="font-size: 18px; font-weight: 500">'+name+'</p><br/><p  class="d-inline comment-text " style="font-size: 15px; margin-left: 8%">'+response.comment+'</p><button style="color: red; float: right; border: none; background: transparent" class="deleteRecord" data-id='+response.id+'  data-name='+response.userId+' data-url="{{ route('commentBTN')}}" >Delete</button> <hr>')
+                      $('.comcontain').append('@if(Auth::user()->prof_image == null)<img class="rounded-circle" src="{{ asset('uploads/user/profile.png')}}" width="30"> @elseif(Auth::user()->prof_image != null)<img class="rounded-circle" src="{{ asset('uploads/user/'.(Auth::user()->prof_image))}}" width="30">@endif<p  class="d-inline comment-text" style="font-size: 18px; font-weight: 500">'+name+'</p><br/><p  class="d-inline comment-text " style="font-size: 15px; margin-left: 8%">'+response.comment+'</p><button style="float: right; margin-top: -20px" class="btn btn-danger deleteRecord " data-id='+response.id+'  data-name='+response.userId+' data-url="{{ route('commentBTN')}}" >Delete</button>  <hr>')
                       $('.noavail').hide()
                       $('.commentSec').empty()
 

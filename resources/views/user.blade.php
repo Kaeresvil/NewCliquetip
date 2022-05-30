@@ -141,8 +141,8 @@
                     <p class="m-0 mt-1" style="font-size:1.1vw;">{{$post->post}}</p>
                     <hr class="p-0">
 
-                    <h6 class="d-flex justify-content-end m-0 p-0" style="font-size:1vw;">
-                        <a style="font-size:1vw; color: #4081c5;" data-bs-toggle="collapse" href="#collapseCommend{{$post->id}}" role="button" aria-expanded="false" aria-controls="collapseCommend{{$post->id}}">
+                    <h6 class="d-flex justify-content-end m-2 p-0" style="font-size:1vw; margin-top: -5px">
+                        <a style="font-size: 16px; color: #4081c5;" data-bs-toggle="collapse" href="#collapseCommend{{$post->id}}" role="button" aria-expanded="false" aria-controls="collapseCommend{{$post->id}}">
                         Comment
                         </a>
                     </h6>
@@ -152,11 +152,12 @@
                     <!-- Comment Collapse -->
                     <div class="d-flex justify-content-center" >
                         <div class="collapse w-100" id="collapseCommend{{$post->id}}" >
-                        <button style="color: red; font-size: 20px;float: left; border: none; background: transparent" class="deleteallRecord " data-id="{{$post->id}}"  data-url="{{ route('allcommentprofBTN',[$post->id])}}" >Delete all</button><br>
                             @foreach($comments[$key] as $key1 => $comment)
                                 <div class="p-0 w-100 mt-2">
-                                    <h5 style="font-size:1vw">{{$commentNames[$key][$key1]}}: <span>{{$comment->comment}}</span>
-                                    <button style="color: red; float: right; border: none; background: transparent" class="deleteRecord mr-2" data-id='{{$comment->id}}' data-url="{{ route('commentprofBTN')}}" >Delete</button>
+                                    
+                                    <h5 style="font-size: 20px">{{$commentNames[$key][$key1]}}: <span>{{$comment->comment}}</span>
+                                   
+                                    <button style="float: right; margin-top: -6px" class="btn btn-danger btn-sm deleteRecord mr-2" data-id='{{$comment->id}}' data-url="{{ route('commentprofBTN')}}" >Delete</button>
                                     <hr>
                                     </h5>
                                    
@@ -211,19 +212,22 @@ $(document).ready(function(){
     $(".deleteallRecord").click(function(){
         $('#deleteall').modal('show');
         var id =  $(this).data("id");
-        var comURL =  $(this).data('url');
+        var commsURL =  $(this).data('url');
         console.log(id);
     
         $(".deleteallbtn").click(function(){
           console.log(id)
                 var token = $("meta[name='csrf-token']").attr("content");
-  
+                var userID = {
+                  "id": id,
+                  "_token": token,
+              }
       
                 $.ajax(
                 {
-                    url: comURL,
-                    type: 'DELETE',
-           
+                    url: commsURL,
+                    type: 'POST',
+                    data: userID,
                     success: function (){
                         console.log("it Works");
                         window.location.reload();

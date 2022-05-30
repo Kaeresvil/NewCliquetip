@@ -33,18 +33,25 @@ class HomeController extends Controller
         foreach($post as $key => $p)
         {
             $comment[$key] = comments::where('postId', $p->id)->get();
+           
+            $istherecomment = true;
         }
 
 
             foreach($post as $key => $p)
             {
+
+              
                     foreach($comment[$key] as $key1 => $c)
-                
+                 
                     {
                         $commentName[$key][$key1] = User::where('id', $c->userId)->value('name'); 
                     }
-                    // $commentName = NULL;
+
             }
+
+  
+
 
 
             if($post->isEmpty()){
